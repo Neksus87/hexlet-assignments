@@ -43,7 +43,7 @@ class FileKVTest {
         KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key", "value"));
 
         // Убедимся, что данные сохраняются в файл
-        KeyValueStorage newStorage = new FileKV(FILE_PATH, Map.of()); // Пустая инициализация, данные должны загружаться из файла
+        KeyValueStorage newStorage = new FileKV(FILE_PATH, Map.of());
         assertThat(newStorage.get("key", "default")).isEqualTo("value");
     }
 

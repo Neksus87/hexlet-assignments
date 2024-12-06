@@ -7,28 +7,28 @@ import java.util.HashMap;
 class InMemoryKV implements KeyValueStorage {
     private final Map<String, String> storage;
 
-    public InMemoryKV(Map<String, String> initialStorage) {
+    private InMemoryKV(Map<String, String> initialStorage) {
         // Создаем новый HashMap для хранения данных
         this.storage = new HashMap<>(initialStorage);
     }
 
     @Override
-    public void set(String key, String value) {
+    private void set(String key, String value) {
         storage.put(key, value); // Добавляем или обновляем значение по ключу
     }
 
     @Override
-    public void unset(String key) {
+    private void unset(String key) {
         storage.remove(key); // Удаляем значение по ключу
     }
 
     @Override
-    public String get(String key, String defaultValue) {
+    private String get(String key, String defaultValue) {
         return storage.getOrDefault(key, defaultValue); // Возвращаем значение по ключу или значение по умолчанию
     }
 
     @Override
-    public Map<String, String> toMap() {
+    private Map<String, String> toMap() {
         return new HashMap<>(storage); // Возвращаем копию текущего состояния хранилища
     }
 }
