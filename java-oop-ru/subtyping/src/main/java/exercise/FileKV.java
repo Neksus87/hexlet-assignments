@@ -9,29 +9,33 @@ public class FileKV implements KeyValueStorage {
 
     public FileKV(String filePath, Map<String, String> initialData) {
         this.filePath = filePath;
-        this.storage = initialData;
-        // Здесь будет логика загрузки данных из файла
-        load();
+        this.storage = new HashMap<>(initialData);
+        load(); // Загружаем данные из файла
     }
 
     private void load() {
-        // Здесь вы загружаете данные из файла
         String json = Utils.readFile(filePath);
         if (json != null) {
-            storage = Utils.deserialize(json); // Десериализация данных
+            storage = Utils.deserialize(json);
         }
     }
 
     @Override
     public void set(String key, String value) {
         storage.put(key, value);
-        save(); // Сохраняем данные после изменения
+        save();
+    }
+
+    @Override
+    public void unset(String key) {
+        storage.remove(key); // Удаляет запись по ключу
+        save(); // Сохраняет изменения после удаления
     }
 
     @Override
     public void unsetAll() {
-        storage.clear(); // Удаляет все записи
-        save(); // Сохраняем состояние
+        storage.clear();
+        save();
     }
 
     @Override
@@ -41,12 +45,12 @@ public class FileKV implements KeyValueStorage {
 
     @Override
     public Map<String, String> toMap() {
-        return storage; // Возвращает копию хранилища
+        return new HashMap<>(storage); // Возвращает копию
     }
 
     private void save() {
-        String json = Utils.serialize(storage); // Сериализация данных
-        Utils.writeFile(filePath, json); // Запись в файл
+        String json = Utils.serialize(storage);
+        Utils.writeFile(filePath, json);
     }
 }
 // END
