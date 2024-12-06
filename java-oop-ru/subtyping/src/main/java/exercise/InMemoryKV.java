@@ -13,22 +13,22 @@ class InMemoryKV implements KeyValueStorage {
     }
 
     @Override
-    private void set(String key, String value) {
+    public void set(String key, String value) {
         storage.put(key, value); // Добавляем или обновляем значение по ключу
     }
 
     @Override
-    private void unset(String key) {
+    public void unset(String key) {
         storage.remove(key); // Удаляем значение по ключу
     }
 
     @Override
-    private String get(String key, String defaultValue) {
+    public String get(String key, String defaultValue) {
         return storage.getOrDefault(key, defaultValue); // Возвращаем значение по ключу или значение по умолчанию
     }
 
     @Override
-    private Map<String, String> toMap() {
+    public Map<String, String> toMap() {
         return new HashMap<>(storage); // Возвращаем копию текущего состояния хранилища
     }
 }
