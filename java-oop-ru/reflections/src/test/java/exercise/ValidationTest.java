@@ -28,27 +28,6 @@ class ValidationTest {
     }
 
     // BEGIN
-    @Test
-    void testAdvancedValidate() {
-        Address address = new Address("USA", "Texas", null, "7", "2");
-        Map<String, List<String>> result = Validator.advancedValidate(address);
-        Map<String, List<String>> expected = Map.of(
-                "country", List.of("length less than 4"),
-                "street", List.of("can not be null")
-        );
-        assertThat(result).isEqualTo(expected);
-    }
 
-    @Test
-    void testAdvancedValidateWithMultipleIssues() {
-        Address address2 = new Address("Eng", null, null, "7", null);
-        Map<String, List<String>> result2 = Validator.advancedValidate(address2);
-        Map<String, List<String>> expected2 = Map.of(
-                "country", List.of("length less than 4"),
-                "city", List.of("can not be null"),
-                "street", List.of("can not be null")
-        );
-        assertThat(result2).isEqualTo(expected2);
-    }
-        // END
+    // END
 }
