@@ -29,9 +29,9 @@ public class FileKV implements KeyValueStorage {
     }
 
     @Override
-    public void unset(String key) {
-        storage.remove(key);
-        save(); // Сохраняем данные после изменения
+    public void unsetAll() {
+        storage.clear(); // Удаляет все записи
+        save(); // Сохраняем состояние
     }
 
     @Override

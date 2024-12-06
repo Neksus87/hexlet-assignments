@@ -18,8 +18,8 @@ public class InMemoryKV implements KeyValueStorage {
     }
 
     @Override
-    public void unset(String key) {
-        storage.remove(key); // Удаляет значение по ключу
+    public void unsetAll() {
+        storage.clear(); // Удаляет все записи
     }
 
     @Override
