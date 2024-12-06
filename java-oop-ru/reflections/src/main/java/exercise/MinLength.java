@@ -8,6 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MinLength {
-    // Изменено на minLength, чтобы соответствовать тому, как аннотация используется
+    // Чтобы аннотация принимала параметр, в интерфейсе нужно определить метод.
+    // Вызов этого метода на экземпляре аннотации вернет значение, переданное аннотации при её использовании.
+    // Если значение не было передано, вызов метода вернет значение по умолчанию.
     int minLength() default 3;
 }
