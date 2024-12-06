@@ -1,25 +1,17 @@
 package exercise;
 
 class Address {
-    // BEGIN
     @NotNull
     @MinLength(4)
-    // END
     private String country;
 
-    // BEGIN
     @NotNull
-    // END
     private String city;
 
-    // BEGIN
     @NotNull
-    // END
     private String street;
 
-    // BEGIN
     @NotNull
-    // END
     private String houseNumber;
 
     private String flatNumber;

@@ -1,7 +1,6 @@
 package exercise;
 
 import java.lang.reflect.Field;
-// BEGIN
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +35,7 @@ public class Validator {
             field.setAccessible(true);
             List<String> errors = new ArrayList<>();
 
+            // Проверка на NotNull
             if (field.isAnnotationPresent(NotNull.class)) {
                 try {
                     if (field.get(obj) == null) {
@@ -46,9 +46,10 @@ public class Validator {
                 }
             }
 
+            // Проверка на MinLength
             if (field.isAnnotationPresent(MinLength.class)) {
                 MinLength minLengthAnnotation = field.getAnnotation(MinLength.class);
-                int minLength = minLengthAnnotation.minLength();
+                int minLength = minLengthAnnotation.minLength(); // Используйте minLength()
                 try {
                     String value = (String) field.get(obj);
                     if (value != null && value.length() < minLength) {
@@ -66,4 +67,3 @@ public class Validator {
         return notValidFields;
     }
 }
-// END
