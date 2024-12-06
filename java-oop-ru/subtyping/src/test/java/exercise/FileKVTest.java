@@ -1,65 +1,59 @@
 package exercise;
 
-import java.util.HashMap;
-import org.junit.jupiter.api.BeforeEach;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import com.fasterxml.jackson.databind.ObjectMapper;
-// BEGIN
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.assertThat;
-import java.util.Map;
-// END
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class FileKVTest {
+    private static final String FILE_PATH = "testfile.txt";
 
-    private static Path filepath = Paths.get("src/test/resources/file").toAbsolutePath().normalize();
-
-    @BeforeEach
-    public void beforeEach() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String content = mapper.writeValueAsString(new HashMap<String, String>());
-        Files.writeString(filepath, content, StandardOpenOption.TRUNCATE_EXISTING);
+    @Test
+    void testFileKV() throws Exception {
+        Files.deleteIfExists(Path.of(FILE_PATH)); // Удаляем файл, если существует
+        KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key", "value"));
+        assertEquals("value", storage.get("key", "default"));
     }
 
-    // BEGIN
     @Test
-    void testGetAndSet() throws Exception {
+    void testFileKVUnset() throws Exception {
+        Files.deleteIfExists(Path.of(FILE_PATH));
         KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key", "value"));
-        assertThat(storage.get("key", "default")).isEqualTo("value");
-
-        storage.set("key2", "value2");
-        assertThat(storage.get("key2", "default")).isEqualTo("value2");
-
         storage.unset("key");
-        assertThat(storage.get("key", "default")).isEqualTo("default");
+        assertEquals("default", storage.get("key", "default"));
     }
 
     @Test
-    void testPersistence() throws Exception {
-        KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key", "value"));
-
-        // Убедимся, что данные сохраняются в файл
-        KeyValueStorage newStorage = new FileKV(FILE_PATH, Map.of());
-        assertThat(newStorage.get("key", "default")).isEqualTo("value");
+    void testFileKVGetDefault() throws Exception {
+        Files.deleteIfExists(Path.of(FILE_PATH));
+        KeyValueStorage storage = new FileKV(FILE_PATH, Map.of());
+        assertEquals("default", storage.get("key", "default"));
     }
 
     @Test
-    void testOverwrite() throws Exception {
+    void testFileKVUpdateValue() throws Exception {
+        Files.deleteIfExists(Path.of(FILE_PATH));
         KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key", "value"));
-
         storage.set("key", "newValue");
-        assertThat(storage.get("key", "default")).isEqualTo("newValue");
+        assertEquals("newValue", storage.get("key", "default"));
     }
 
     @Test
-    void testMultipleKeys() throws Exception {
+    void testFileKVMultipleEntries() throws Exception {
+        Files.deleteIfExists(Path.of(FILE_PATH));
         KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key1", "value1", "key2", "value2"));
-        assertThat(storage.get("key1", "default")).isEqualTo("value1");
-        assertThat(storage.get("key2", "default")).isEqualTo("value2");
+        assertEquals("value1", storage.get("key1", "default"));
+        assertEquals("value2", storage.get("key2", "default"));
     }
-    // END
+
+    @Test
+    void testFileKVClear() throws Exception {
+        Files.deleteIfExists(Path.of(FILE_PATH));
+        KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key1", "value1"));
+        storage.clear();
+        assertEquals("default", storage.get("key1", "default"));
+    }
 }

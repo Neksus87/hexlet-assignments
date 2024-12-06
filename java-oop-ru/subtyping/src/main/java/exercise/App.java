@@ -1,10 +1,8 @@
 package exercise;
 
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.HashMap;
+import java.util.Map;
 
-// BEGIN
 class App {
     public static void swapKeyValue(KeyValueStorage storage) {
         Map<String, String> data = storage.toMap();
@@ -16,12 +14,9 @@ class App {
         }
 
         // Очищаем текущее хранилище и добавляем перевернутые пары
-        for (String key : data.keySet()) {
-            storage.unset(key);
-        }
+        storage.clear();
         for (Map.Entry<String, String> entry : swappedData.entrySet()) {
             storage.set(entry.getKey(), entry.getValue());
         }
     }
 }
-// END
