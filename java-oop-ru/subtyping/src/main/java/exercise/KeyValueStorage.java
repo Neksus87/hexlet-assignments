@@ -2,10 +2,9 @@ package exercise;
 
 import java.util.Map;
 
-public interface KeyValueStorage {
+interface KeyValueStorage {
     void set(String key, String value);
     void unset(String key);
     String get(String key, String defaultValue);
     Map<String, String> toMap();
-    void unsetAll(); // Добавить метод для удаления всех записей
 }

@@ -2,22 +2,25 @@ package exercise;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 // BEGIN
-import java.util.HashMap;
-
-public class App {
+class App {
     public static void swapKeyValue(KeyValueStorage storage) {
-        Map<String, String> currentData = storage.toMap();
+        Map<String, String> data = storage.toMap();
         Map<String, String> swappedData = new HashMap<>();
 
-        for (Map.Entry<String, String> entry : currentData.entrySet()) {
-            swappedData.put(entry.getValue(), entry.getKey()); // Меняем местами ключи и значения
+        // Меняем местами ключи и значения
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            swappedData.put(entry.getValue(), entry.getKey());
         }
 
-        storage.unsetAll(); // Удаляем все существующие записи
+        // Очищаем текущее хранилище и добавляем перевернутые пары
+        for (String key : data.keySet()) {
+            storage.unset(key);
+        }
         for (Map.Entry<String, String> entry : swappedData.entrySet()) {
-            storage.set(entry.getKey(), entry.getValue()); // Добавляем новое значение
+            storage.set(entry.getKey(), entry.getValue());
         }
     }
 }

@@ -9,7 +9,7 @@ import java.nio.file.StandardOpenOption;
 import com.fasterxml.jackson.databind.ObjectMapper;
 // BEGIN
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals; // Импортируем assertEquals
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Map;
 // END
 
@@ -27,31 +27,39 @@ class FileKVTest {
 
     // BEGIN
     @Test
-    public void testFileKV() throws Exception {
-        String filePath = "testFile.json"; // путь к временному файлу
+    void testGetAndSet() throws Exception {
+        KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key", "value"));
+        assertThat(storage.get("key", "default")).isEqualTo("value");
 
-        // Создание нового хранилища с начальными данными
-        KeyValueStorage storage = new FileKV(filePath, Map.of("key", "value"));
+        storage.set("key2", "value2");
+        assertThat(storage.get("key2", "default")).isEqualTo("value2");
 
-        // Проверка получения значения
-        assertEquals("value", storage.get("key", "default"));
-        assertEquals("default", storage.get("unknown", "default"));
+        storage.unset("key");
+        assertThat(storage.get("key", "default")).isEqualTo("default");
+    }
 
-        // Установка нового значения
-        storage.set("new_key", "new_value");
-        assertEquals("new_value", storage.get("new_key", "default"));
+    @Test
+    void testPersistence() throws Exception {
+        KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key", "value"));
 
-        // Удаление ключа
-        storage.unset("new_key");
-        assertEquals("default", storage.get("new_key", "default"));
+        // Убедимся, что данные сохраняются в файл
+        KeyValueStorage newStorage = new FileKV(FILE_PATH, Map.of()); // Пустая инициализация, данные должны загружаться из файла
+        assertThat(newStorage.get("key", "default")).isEqualTo("value");
+    }
 
-        // Проверка, что данные сохраняются в файл
-        String content = new String(Files.readAllBytes(Paths.get(filePath)));
-        Map<String, String> loadedData = Utils.deserialize(content);
-        assertEquals("value", loadedData.get("key"));
+    @Test
+    void testOverwrite() throws Exception {
+        KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key", "value"));
 
-        // Удаляем временный файл после теста
-        Files.delete(Paths.get(filePath));
+        storage.set("key", "newValue");
+        assertThat(storage.get("key", "default")).isEqualTo("newValue");
+    }
+
+    @Test
+    void testMultipleKeys() throws Exception {
+        KeyValueStorage storage = new FileKV(FILE_PATH, Map.of("key1", "value1", "key2", "value2"));
+        assertThat(storage.get("key1", "default")).isEqualTo("value1");
+        assertThat(storage.get("key2", "default")).isEqualTo("value2");
     }
     // END
 }
