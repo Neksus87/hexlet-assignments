@@ -14,8 +14,8 @@ public class Validator {
         Class<?> clazz = obj.getClass();
 
         for (Field field : clazz.getDeclaredFields()) {
+            field.setAccessible(true); // Даем доступ к приватным полям
             if (field.isAnnotationPresent(NotNull.class)) {
-                field.setAccessible(true);
                 try {
                     if (field.get(obj) == null) {
                         notValidFields.add(field.getName());
@@ -36,7 +36,6 @@ public class Validator {
             field.setAccessible(true);
             List<String> errors = new ArrayList<>();
 
-            // Проверка NotNull
             if (field.isAnnotationPresent(NotNull.class)) {
                 try {
                     if (field.get(obj) == null) {
@@ -47,15 +46,13 @@ public class Validator {
                 }
             }
 
-            // Проверка MinLength
             if (field.isAnnotationPresent(MinLength.class)) {
-                MinLength minLength = field.getAnnotation(MinLength.class);
-                int min = minLength.minLength();
-
+                MinLength minLengthAnnotation = field.getAnnotation(MinLength.class);
+                int minLength = minLengthAnnotation.minLength();
                 try {
                     String value = (String) field.get(obj);
-                    if (value != null && value.length() < min) {
-                        errors.add("length less than " + min);
+                    if (value != null && value.length() < minLength) {
+                        errors.add("length less than " + minLength);
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

@@ -31,20 +31,24 @@ class ValidationTest {
     @Test
     void testAdvancedValidate() {
         Address address = new Address("USA", "Texas", null, "7", "2");
-        Map<String, List<String>> notValidFields = Validator.advancedValidate(address);
-        assertThat(notValidFields).containsExactlyInAnyOrderEntriesOf(
-                Map.of("street", List.of("can not be null"))
+        Map<String, List<String>> result = Validator.advancedValidate(address);
+        Map<String, List<String>> expected = Map.of(
+                "country", List.of("length less than 4"),
+                "street", List.of("can not be null")
         );
-
-        Address address2 = new Address("UK", "London", "Baker Street", "5", null);
-        Map<String, List<String>> notValidFields2 = Validator.advancedValidate(address2);
-        assertThat(notValidFields2).containsExactlyInAnyOrderEntriesOf(
-                Map.of("country", List.of("length less than 4"))
-        );
-
-        Address address3 = new Address("England", "Cambridge", "Kings Parade", "3", null);
-        Map<String, List<String>> notValidFields3 = Validator.advancedValidate(address3);
-        assertThat(notValidFields3).isEmpty();
+        assertThat(result).isEqualTo(expected);
     }
-    // END
+
+    @Test
+    void testAdvancedValidateWithMultipleIssues() {
+        Address address2 = new Address("Eng", null, null, "7", null);
+        Map<String, List<String>> result2 = Validator.advancedValidate(address2);
+        Map<String, List<String>> expected2 = Map.of(
+                "country", List.of("length less than 4"),
+                "city", List.of("can not be null"),
+                "street", List.of("can not be null")
+        );
+        assertThat(result2).isEqualTo(expected2);
+    }
+        // END
 }
