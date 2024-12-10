@@ -2,6 +2,7 @@ package exercise;
 
 import lombok.Value;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 
 // BEGIN
 @Value
