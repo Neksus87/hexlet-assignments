@@ -4,11 +4,6 @@ class Address {
     // BEGIN
     @NotNull
     // END
-    private String country;
-
-    // BEGIN
-    @NotNull
-    // END
 
     private String country;
     // BEGIN
