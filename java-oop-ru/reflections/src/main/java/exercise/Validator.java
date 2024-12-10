@@ -1,6 +1,7 @@
 package exercise;
-
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 // BEGIN
 public class Validator {
     public static List<String> validate(Address address) {
@@ -18,4 +19,6 @@ public class Validator {
             }
         }
         return result;
+    }
+}
 // END
