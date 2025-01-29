@@ -1,40 +1,24 @@
 package exercise;
 
 import io.javalin.Javalin;
-import io.javalin.http.JsonMapper;
-import com.google.gson.Gson;
 
-public final class App {
+import java.util.List;
 
-    public static Javalin getApp() {
-
-        // BEGIN
-        public static Javalin getApp() {
-            // Создаем приложение Javalin
-            Javalin app = Javalin.create();
-
-            // Обработчик GET /phones
-            app.get("/phones", ctx -> {
-                // Получаем список телефонов
-                List<String> phones = Data.getPhones();
-                // Возвращаем список телефонов в формате JSON
-                ctx.json(phones);
-            });
-
-            // Обработчик GET /domains
-            app.get("/domains", ctx -> {
-                // Получаем список доменных имен
-                List<String> domains = Data.getDomains();
-                // Возвращаем список доменных имен в формате JSON
-                ctx.json(domains);
-            });
-
-            return app; // Возвращаем экземпляр Javalin
-        // END
-    }
-
+public class App {
     public static void main(String[] args) {
-        Javalin app = getApp();
-        app.start(7070);
+        Javalin app = Javalin.create(); // Создаем приложение Javalin и настраиваем его
+        // Обработчик GET /phones
+        app.get("/phones", ctx -> {
+            List<String> phones = Data.getPhones(); // Получаем список телефонов
+            ctx.json(phones); // Возвращаем список телефонов в формате JSON
+        });
+
+        // Обработчик GET /domains
+        app.get("/domains", ctx -> {
+            List<String> domains = Data.getDomains(); // Получаем список доменов
+            ctx.json(domains); // Возвращаем список доменов в формате JSON
+        });
+
+        app.start(7070); // Запускаем сервер на порту 7070
     }
 }
