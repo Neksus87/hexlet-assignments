@@ -25,7 +25,7 @@ public final class App {
             Map<String, String> company = COMPANIES.stream()
                     .filter(c -> c.get("id").equals(id)) // Найти компанию по id
                     .findFirst()
-                    .orElseThrow(NotFoundResponse::new); // Если не найдено, выбросить 404
+                    .orElseThrow(() -> new NotFoundResponse("Company not found")); // Если не найдено, выбросить 404 с сообщением
 
             ctx.json(company); // Возвращаем найденную компанию в формате JSON
         });
