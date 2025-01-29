@@ -2,23 +2,29 @@ package exercise;
 
 import io.javalin.Javalin;
 
-import java.util.List;
+public final class App {
 
-public class App {
-    public static void main(String[] args) {
-        Javalin app = Javalin.create(); // Создаем приложение Javalin и настраиваем его
+    public static Javalin getApp() {
+        // Создаем приложение Javalin
+        Javalin app = Javalin.create();
+
         // Обработчик GET /phones
         app.get("/phones", ctx -> {
-            List<String> phones = Data.getPhones(); // Получаем список телефонов
-            ctx.json(phones); // Возвращаем список телефонов в формате JSON
+            // Получаем список телефонов и возвращаем его в формате JSON
+            ctx.json(Data.getPhones());
         });
 
         // Обработчик GET /domains
         app.get("/domains", ctx -> {
-            List<String> domains = Data.getDomains(); // Получаем список доменов
-            ctx.json(domains); // Возвращаем список доменов в формате JSON
+            // Получаем список доменов и возвращаем его в формате JSON
+            ctx.json(Data.getDomains());
         });
 
-        app.start(7070); // Запускаем сервер на порту 7070
+        return app; // Возвращаем настроенное приложение
+    }
+
+    public static void main(String[] args) {
+        Javalin app = getApp();
+        app.start(7070); // Запуск приложения на порту 7070
     }
 }
