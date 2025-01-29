@@ -17,8 +17,11 @@ public final class App {
         // BEGIN
         app.get("/users", ctx -> {
             // Получаем параметры page и per из строки запроса
-            int page = ctx.queryParam("page", "1").equals("") ? 1 : Integer.parseInt(ctx.queryParam("page", "1"));
-            int per = ctx.queryParam("per", "5").equals("") ? 5 : Integer.parseInt(ctx.queryParam("per", "5"));
+            String pageParam = ctx.queryParam("page");
+            String perParam = ctx.queryParam("per");
+
+            int page = (pageParam == null || pageParam.isEmpty()) ? 1 : Integer.parseInt(pageParam);
+            int per = (perParam == null || perParam.isEmpty()) ? 5 : Integer.parseInt(perParam);
 
             // Вычисляем количество пользователей на странице
             int start = (page - 1) * per;
