@@ -6,6 +6,9 @@ plugins {
     id("com.github.ben-manes.versions") version "0.48.0"
     application
     id("io.freefair.lombok") version "8.6"
+    kotlin("jvm") version "1.5.31"
+    kotlin("kapt") version "1.5.31"
+    application
 }
 
 application {
@@ -27,6 +30,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.projectlombok:lombok:1.18.20") // Lombok
     kapt("org.projectlombok:lombok-compiler:1.18.20") // Kapt for Kotlin
+    implementation("io.javalin:javalin:4.2.0") // Javalin
+
     // END
 
     implementation("io.javalin:javalin-bundle:6.1.3")
