@@ -30,7 +30,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.projectlombok:lombok:1.18.20") // Lombok
     kapt("org.projectlombok:lombok-compiler:1.18.20") // Kapt for Kotlin
-    implementation("io.javalin:javalin:4.2.0") // Javalin
 
     // END
 
