@@ -1,12 +1,10 @@
 package exercise;
 
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import gg.jte.TemplateEngine;
-import gg.jte.resolve.ClassPathCodeResolver;
-import io.javalin.plugin.rendering.vue.JavalinVue;
-import static io.javalin.plugin.rendering.template.JavalinJte.init;
+import gg.jte.resolve.ClasspathCodeResolver; // Убедитесь, что это существует в вашей версии JTE
+
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +15,7 @@ public final class App {
     public static Javalin getApp() {
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
-            init(new TemplateEngine(ClassPathCodeResolver.createDefault()));
+            init(new TemplateEngine(ClasspathCodeResolver.createDefault())); // Убедитесь, что это работает
         });
 
         app.get("/", ctx -> {

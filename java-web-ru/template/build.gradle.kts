@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     implementation("io.javalin:javalin:6.1.3")
-    implementation("gg.jte:jte:2.0.0") // Добавляем зависимость для JTE
+    implementation("gg.jte:jte:2.0.0") // Подключение JTE
     implementation("org.slf4j:slf4j-simple:2.0.7")
     implementation("net.datafaker:datafaker:2.0.1")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
