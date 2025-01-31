@@ -2,6 +2,7 @@ package exercise.dto.users;
 
 import exercise.model.User;
 import java.util.List;
+import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -26,14 +26,16 @@ public final class App {
             var page = new UsersPage(USERS);
             ctx.render("users/index.jte", model("usersPage", page));
         });
-        app.get("/users/{id}", ctx -> {
-            var id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
-            var user = USERS.stream().filter(item -> item.getId() == id).findFirst();
-            if (user.isEmpty()) throw new NotFoundResponse("User not found");
-            else {
-                var userPage = new UserPage(user.get());
-                ctx.render("users/show.jte", model("userPage", userPage));
+        app.get("/users/:id", ctx -> {
+            long id = Long.parseLong(ctx.param("id"));
+            User user = USERS.stream()
+                    .filter(u -> u.getId() == id)
+                    .findFirst()
+                    .orElse(null);
+            if (user == null) {  // Добавлены фигурные скобки
+                throw new NotFoundResponse("User not found");
             }
+            ctx.render("users/show.jte", model("user", new UserPage(user)));
         });
         // END
 
