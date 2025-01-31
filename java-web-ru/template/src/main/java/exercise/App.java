@@ -3,11 +3,16 @@ package exercise;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import gg.jte.TemplateEngine;
-import gg.jte.resolve.ClasspathCodeResolver; // Убедитесь, что это существует в вашей версии JTE
-
+import gg.jte.resolve.CodeResolver;
+import gg.jte.TemplateEngineConfig;
+import static io.javalin.plugin.rendering.template.JavalinJte.init;
 
 import java.util.List;
 import java.util.Optional;
+import exercise.model.User;
+import exercise.dto.users.UsersPage;
+import exercise.dto.users.UserPage;
+import static io.javalin.rendering.template.TemplateUtil.model;
 
 public final class App {
     private static final List<User> USERS = Data.getUsers();
@@ -15,7 +20,7 @@ public final class App {
     public static Javalin getApp() {
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
-            init(new TemplateEngine(ClasspathCodeResolver.createDefault())); // Убедитесь, что это работает
+            init(new TemplateEngine(CodeResolver.createDefault(), new TemplateEngineConfig()));
         });
 
         app.get("/", ctx -> {

@@ -1,3 +1,4 @@
+// src/main/java/exercise/model/User.java
 package exercise.model;
 
 public class User {

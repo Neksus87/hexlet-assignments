@@ -1,3 +1,4 @@
+// src/main/java/exercise/Data.java
 package exercise;
 
 import java.util.Random;
