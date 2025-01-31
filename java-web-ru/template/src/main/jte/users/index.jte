@@ -1,33 +1,29 @@
+@users: List<exercise.model.User>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Users List</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>User List</title>
 </head>
 <body>
-<div class="container">
-    <h1>Users List</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (user : usersPage.getUsers()) {
-                <tr>
-                    <td>@user.getId()</td>
-                    <td>@user.getFirstName() @user.getLastName()</td>
-                    <td>@user.getEmail()</td>
-                    <td><a href="/users/@user.getId()">View</a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+<h1>User List</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    @for(user in users) {
+        <tr>
+            <td>@user.id</td>
+            <td>@user.firstName</td>
+            <td>@user.lastName</td>
+            <td>@user.email</td>
+            <td><a href="/users/@user.id">View</a></td>
+        </tr>
+    }
+</table>
 </body>
 </html>
