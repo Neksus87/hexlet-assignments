@@ -25,7 +25,7 @@ public final class App {
         // Обработчик для отображения списка пользователей
         app.get("/users", ctx -> {
             List<User> users = USERS; // Получаем список пользователей
-            ctx.render("users/index.jte", model("users", new UsersPage(users))); // Отображаем страницу со списком пользователей
+            ctx.render("users/index.jte", model("users", new UsersPage(users)));
         });
 
         // Обработчик для отображения конкретного пользователя
@@ -35,7 +35,7 @@ public final class App {
             if (user == null) {
                 throw new NotFoundResponse("User not found");
             }
-            ctx.render("users/show.jte", model("user", new UserPage(user))); // Отображаем страницу с данными конкретного пользователя
+            ctx.render("users/show.jte", model("user", new UserPage(user)));
         });
         // END
 

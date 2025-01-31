@@ -24,8 +24,8 @@ dependencies {
 
     // BEGIN
     // Добавляем зависимость для JTE
-    implementation("gg.jte:jte-core:1.7.0")
-    implementation("gg.jte:jte-javalin:1.7.0") // Для интеграции с Javalin
+    implementation("gg.jte:jte-core:3.1.15")
+    implementation("gg.jte:jte-javalin:3.1.15") // Для интеграции с Javalin
     // END
 
     implementation("io.javalin:javalin-bundle:6.1.3")
