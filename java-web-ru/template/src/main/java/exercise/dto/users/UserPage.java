@@ -1,14 +1,11 @@
 package exercise.dto.users;
 
 import exercise.model.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-// BEGIN
-@Getter
 @AllArgsConstructor
+@Getter
 public class UserPage {
-    private final User user;
+    private User user;
 }
-// END

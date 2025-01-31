@@ -24,13 +24,12 @@ class AppTest {
 
     @Test
     void testListUsers() throws Exception {
-
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/users");
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string())
-                .contains("Bobbi", "Wehner")
-                .contains("Will", "Casper");
+                    .contains("Bobbi", "Wehner")
+                    .contains("Will", "Casper");
         });
     }
 
@@ -40,8 +39,8 @@ class AppTest {
             var response = client.get("/users/1");
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string())
-                .contains("Pearl", "Schultz")
-                .doesNotContain("Bobbi", "Wehner");
+                    .contains("Pearl", "Schultz")
+                    .doesNotContain("Bobbi", "Wehner");
         });
     }
 
@@ -51,8 +50,8 @@ class AppTest {
             var response = client.get("/users/5");
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string())
-                .contains("Minerva", "Altenwerth")
-                .doesNotContain("Ilse", "Roob");
+                    .contains("Minerva", "Altenwerth")
+                    .doesNotContain("Ilse", "Roob");
         });
     }
 }
