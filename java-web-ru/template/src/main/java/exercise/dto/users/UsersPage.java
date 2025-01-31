@@ -5,11 +5,15 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 
 // BEGIN
-@AllArgsConstructor
 @Getter
 public class UsersPage {
-    private final List<User> users;
+    @NonNull private List<User> users;
+
+    public UsersPage(List<User> users) {
+        this.users = users;
+    }
 }
 // END

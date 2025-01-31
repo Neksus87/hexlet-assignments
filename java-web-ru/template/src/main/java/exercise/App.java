@@ -1,53 +1,50 @@
 package exercise;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import io.javalin.testtools.JavalinTest;
 import io.javalin.Javalin;
-import java.util.List;
-import io.javalin.http.NotFoundResponse;
-import exercise.model.User;
-import exercise.dto.users.UserPage;
-import exercise.dto.users.UsersPage;
-import static io.javalin.rendering.template.TemplateUtil.model;
-import io.javalin.rendering.template.JavalinJte;
 
-public final class App {
-
-    // Каждый пользователь представлен объектом класса User
-    private static final List<User> USERS = Data.getUsers();
-
-    public static Javalin getApp() {
-
-        var app = Javalin.create(config -> {
-            config.bundledPlugins.enableDevLogging();
-            config.fileRenderer(new JavalinJte());
-        });
-
-        // BEGIN
-        // Обработчик для отображения списка пользователей
-        app.get("/users", ctx -> {
-            List<User> users = USERS; // Получаем список пользователей
-            ctx.render("users/index.jte", model("users", new UsersPage(users)));
-        });
-
-        // Обработчик для отображения конкретного пользователя
-        app.get("/users/:id", ctx -> {
-            long id = Long.parseLong(ctx.param("id"));
-            User user = USERS.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
-            if (user == null) {
-                throw new NotFoundResponse("User not found");
-            }
-            ctx.render("users/show.jte", model("user", new UserPage(user)));
-        });
-        // END
-
-        app.get("/", ctx -> {
-            ctx.render("index.jte");
-        });
-
-        return app;
+class AppTest {
+    private static Javalin app;
+    @BeforeEach
+    public void setUp() {
+        app = App.getApp();
     }
-
-    public static void main(String[] args) {
-        Javalin app = getApp();
-        app.start(7070);
+    @Test
+    void testRootPage() throws Exception {
+        JavalinTest.test(app, (server, client) -> {
+            assertThat(client.get("/").code()).isEqualTo(200);
+        });
+    }
+    @Test
+    void testListUsers() throws Exception {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/users");
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string())
+                    .contains("Bobbi", "Wehner")
+                    .contains("Will", "Casper");
+        });
+    }
+    @Test
+    void testShowUser1() throws Exception {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/users/1");
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string())
+                    .contains("Pearl", "Schultz")
+                    .doesNotContain("Bobbi", "Wehner");
+        });
+    }
+    @Test
+    void testShowUser2() throws Exception {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/users/5");
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string())
+                    .contains("Minerva", "Altenwerth")
+                    .doesNotContain("Ilse", "Roob");
+        });
     }
 }
