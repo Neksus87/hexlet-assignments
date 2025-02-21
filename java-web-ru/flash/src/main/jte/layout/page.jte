@@ -1,4 +1,3 @@
-<!-- BEGIN -->
 @import gg.jte.Content
 @import exercise.dto.BasePage
 @param Content content
@@ -42,4 +41,4 @@
 
     </body>
 </html>
-<!-- END -->
+
