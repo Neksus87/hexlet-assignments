@@ -2,6 +2,7 @@ package exercise;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -42,7 +43,7 @@ public class Application {
                 .filter(p -> p.getId().equals(id))
                 .findFirst();
 
-         return ResponseEntity.of(post);
+        return ResponseEntity.of(post);
     }
 
     @PostMapping("/posts")
