@@ -3,9 +3,12 @@ package exercise.controller;
 import exercise.dto.AuthorDTO;
 import exercise.dto.AuthorCreateDTO;
 import exercise.dto.AuthorUpdateDTO;
+import exercise.model.Author;
 import exercise.service.AuthorService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,31 +31,37 @@ public class AuthorsController {
 
     // BEGIN
     @GetMapping(path = "")
-    public List<AuthorDTO> index() {
-        return authorService.getAllAuthors();
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<AuthorDTO>> index() {
+        var authors = authorService.getAll();
+        return ResponseEntity.ok().body(authors);
     }
 
     @GetMapping(path = "/{id}")
-    public AuthorDTO show(@PathVariable long id) {
-        return authorService.getAuthorById(id);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<AuthorDTO> show(@PathVariable Long id){
+        var author = authorService.getAuthorById(id);
+        return ResponseEntity.ok().body(author);
     }
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthorDTO create(@Valid @RequestBody AuthorCreateDTO authorData) {
-        return authorService.createAuthor(authorData);
+    public AuthorDTO create(@Valid @RequestBody AuthorCreateDTO data){
+        return authorService.createAuthor(data);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    AuthorDTO update(@RequestBody @Valid AuthorUpdateDTO authorData, @PathVariable Long id) {
-        return authorService.updateAuthor(authorData, id);
+    public ResponseEntity<AuthorDTO> update(@Valid @RequestBody AuthorUpdateDTO data, @PathVariable Long id){
+        var author = authorService.updateAuthor(data, id);
+        return ResponseEntity.ok().body(author);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void destroy(@PathVariable Long id) {
+    public void delete(@PathVariable Long id){
         authorService.deleteAuthor(id);
     }
+
     // END
 }
