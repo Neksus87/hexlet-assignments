@@ -9,6 +9,7 @@ import exercise.dto.ProductUpdateDTO;
 import exercise.mapper.ProductMapper;
 import exercise.specification.ProductSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,12 +40,12 @@ public class ProductsController {
     @Autowired
     private ProductSpecification specBuilder;
 
-    @GetMapping("")
-    List<ProductDTO> index(ProductParamsDTO params, @RequestParam(defaultValue = "1") int page) {
-        var specification = specBuilder.build(params);
-        var products = productRepository
-                .findAll(specification, PageRequest.of(page - 1, 10));
-        return products.map(productMapper::map).toList();
+    @GetMapping(path = "")
+    public List<ProductDTO> index(ProductParamsDTO params, @RequestParam(defaultValue = "1") int page){
+        var spec = specBuilder.build(params);
+        var products = productRepository.findAll(spec, PageRequest.of(page - 1, 10));
+        var result = products.map(productMapper::map).stream().toList();
+        return result;
     }
     // END
 
