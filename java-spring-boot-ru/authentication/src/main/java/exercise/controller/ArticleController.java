@@ -5,11 +5,13 @@ import java.util.List;
 import exercise.dto.ArticleCreateDTO;
 import exercise.dto.ArticleDTO;
 import exercise.dto.ArticleUpdateDTO;
+import exercise.dto.AuthRequest;
 import exercise.mapper.ArticleMapper;
 import exercise.repository.UserRepository;
 import exercise.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,12 +43,11 @@ public class ArticleController {
 
 
     // BEGIN
-    @PostMapping("")
+    @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    ArticleDTO create(@Valid @RequestBody ArticleCreateDTO articleData) {
-        var article = articleMapper.map(articleData);
-        var user = userUtils.getCurrentUser();
-        article.setAuthor(user);
+    public ArticleDTO create(@RequestBody @Valid ArticleCreateDTO data){
+        var article = articleMapper.map(data);
+        article.setAuthor(userUtils.getCurrentUser());
         articleRepository.save(article);
         return articleMapper.map(article);
     }
